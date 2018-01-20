@@ -6,10 +6,10 @@
   "version": "2.8",
   "short_name": "Starry–eyed Fiori Developer",
   "icons": { 
- 			"16": "Icons/star_blue_48.png",
-           	"48": "Icons/star_blue_48.png",
-          	"128": "Icons/star_blue_128.png" 
-          	},
+        "16":"Icons/star_blue_48.png",
+        "48":"Icons/star_blue_48.png",
+        "128":"Icons/star_blue_128.png" 
+    },
    "browser_action": {
    "default_icon": "Icons/star_blue_48.png",
    "default_title": "Start FioriStars"

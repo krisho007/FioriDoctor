@@ -18,8 +18,6 @@ chrome.contextMenus.onClicked.addListener(onClickHandler);
 // The onClicked callback function.
 function onClickHandler(info, tab) {
 	var sText = info.selectionText;
-//	var url = "https://launchpad.support.sap.com/#/notes/	"
-//			+ encodeURIComponent(sText);
 	var url = "https://launchpad.support.sap.com/#/solutions/notes/?q="
 	+ encodeURIComponent(sText);	
 	window.open(url, '_blank');

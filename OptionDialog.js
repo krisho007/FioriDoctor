@@ -23,7 +23,6 @@ function OpenPopup() {
 			contentWidth: "250px",
 			modal: false,
 			draggable: true,
-			// icon: 'Icons/start_blue_49.png',
 			beginButton: new sap.m.Button({
 				text: 'OK',
 				press: function () {
@@ -35,27 +34,27 @@ function OpenPopup() {
 					id: "controls",
 					label: "Explore Controls",
 					content: new sap.m.Switch({
-						state: false,
+						state: '{FioriDoctor>/exploreControls}',
 						change: handleExploreSwitch
 					})
 				}), new sap.m.InputListItem({
 					id: "views",
 					label: "Show UI5 View name",
 					content: new sap.m.Switch({
-						state: false,
+						state: '{FioriDoctor>/showUI5ViewName}',
 						change: handleUI5ViewsSwitch
 					})
 				}), new sap.m.InputListItem({
 					label: "Non-minified JS files",
 					content: new sap.m.Switch({
-						state: false,
+						state: '{FioriDoctor>/non-minifiedJSFiles}',
 						change: showNonMinifiedAppFiles
 					})
 				}), new sap.m.InputListItem({
 					id: "OData",
 					label: "Sniff OData",
 					content: new sap.m.Switch({
-						state: false,
+						state: '{FioriDoctor>/sniffOData}',
 						change: handleSniffSwitch
 					})
 				}), new sap.m.InputListItem({
@@ -64,21 +63,11 @@ function OpenPopup() {
 						text: 'Clear',
 						press: handleClearCache
 					})
-					// }), new sap.m.InputListItem({
-					// label : "Show Extensions",
-					// content : new sap.m.Switch({
-					// state : false,
-					// change : showExtensions
-					// })
-
 				}), new sap.m.InputListItem({
 					label: "UI5 Version",
 					content: new sap.m.Label({
 						text: sap.ui.version
 					})
-					//				}), new sap.m.InputListItem({
-					//					label : "Search SAP Note",
-					//					content : [ new sap.m.Input(), new sap.m.Button({text:"Search"})]
 				})
 
 				]
@@ -87,6 +76,16 @@ function OpenPopup() {
 
 			]
 		});
+		//TODO
+		//Opening for the first time. Create the JSON model to store settings and bind to the pop-up
+		var oFioriDoctorModel = new sap.ui.model.json.JSONModel();
+		oFioriDoctorModel.setData({
+			"exploreControls": false,
+			"showUI5ViewName": false,
+			"non-minifiedJSFiles": false,
+			"sniffOData": false
+		});
+		popup.setModel(oFioriDoctorModel, 'FioriDoctor');
 	}
 	popup.addStyleClass("sapUiSizeCompact");
 	popup.open();
@@ -245,18 +244,19 @@ function highlight(e) {
 
 		// Add more data for Tile Container and Tiles
 		if (controlName == 'sap.ushell.ui.launchpad.TileContainer') {
-			$('.items')
-				.html(
-					+ ' <div style= "text-align:left"> <div style="color:#009de0;"> Group ID: </div>'
-					+ control.getBindingContext().getObject().object
-						.getId() + '</div>');
+			$('.items').html(
+				'<div style= "text-align:left"> <div style="color:#009de0;"> Group ID: </div>'
+				+ control.getBindingContext().getObject().object
+					.getId() + '</div>');
 		} else if (controlName == 'sap.m.GenericTile') {
-
 			if (control.getModel().getData()) { // Only for dynamic tile, add
 				// navigation target
 				$('.items')
 					.html(
-						'<div style= "text-align:left">' + controlName + '</div>'
+						'<div style= "text-align:left"> <div style="color:#009de0;"> Tile Type: </div>'
+						+'<div style= "text-align:left">' + control.getParent().getProperty("viewName").split(".")[control.getParent().getProperty("viewName").split(".").length - 1] + '</div>'
+						+ '<div style= "text-align:left"> <div style="color:#009de0;"> Group ID: </div>'
+						+ control.getParent().getParent().getParent().getBindingContext().getObject().object.getId() + '</div>'						
 						+ '<div style= "text-align:left"> <div style="color:#009de0;"> Catalog ID: </div>'
 						+ control.getParent().getParent().getBindingContext().getObject().tileCatalogId.split("%3A")[2]
 						+ '</div>'
